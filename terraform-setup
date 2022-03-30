@@ -1,0 +1,102 @@
+#!/usr/bin/python3
+
+#Load Libraries
+from ruamel.yaml import YAML
+import sys
+import os
+from pathlib import Path
+from os import path
+from config_loader.config_loader import config_loader
+
+#Get current workking directory for bin path
+cwd = os.getcwd()
+
+#Configure Paths
+sys.path.insert(1, str(os.path.join(sys.path[0]))+'/config_loader/')
+
+#Starting terraform Configuration Builder Output
+print("Starting Terraform Project Builder")
+print("=========================================================")
+
+#User Input
+#Project Name
+project_name = input("Please enter the name of the project you wish to make:")
+#Confirmation:
+configuration = input("You have entered \""+project_name+"\" , do you wish to proceed? [Y/N]")
+#Confirm User Input
+if configuration != "Y":
+    exit(0)
+
+#Validate Input
+project = project_name.replace(" ", "_")
+
+#Log Seporator
+print("=========================================================")
+
+#Initialise & Load Configuration File
+cl = config_loader()
+clConfig = cl.get_configuration()
+
+#Assign Directory Structure
+directories = ["environments", "modules" , "src"]
+#Assign gitignore content
+git_ignore = clConfig['gitignore_content']
+#Assign Environments List
+environments = clConfig['environments']
+#Assign Readme Content 
+readme = clConfig['readme_content']
+#Terraform files array
+env_filestructure = ["terraform.tfvars","variables.tf","main.tf","provider.tf","backened.tf"]
+
+#Create Project Dir
+if path.exists(cwd+"/"+project):
+  print("ERROR: Project Exists, Exiting")
+  exit(1)
+else:
+  print("INFO: Creating Project Directory: " + project)
+  os.mkdir(cwd+"/"+project)
+  print("INFO: Created Project Directory: " + project)
+
+#Project Directory
+project_dir = cwd+"/"+project  
+
+#Project Dir Setup
+for i in directories:
+  os.mkdir(project_dir+"/"+i)
+
+#Loop through and create environments from configuration file
+for environment in environments:
+  print("INFO: Creating Environments Directory: " + environment)
+  os.mkdir(project_dir+"/"+"environments/"+environment)
+  print("INFO: Created Environments Directory: " + environment)
+  #Loop through each of the required terraform files
+  for file in env_filestructure:
+    print("INFO: Creating Terraform Required File: "+ file)
+    Path(project_dir+"/"+"environments/"+environment+"/"+file).touch()
+    print("INFO: Created Terraform Required File: "+ file)
+
+#Create Gitignore 
+#Open file for gitignore
+print("INFO: Opening git ignore file")
+gitignore_file = open(project_dir+"/.gitignore", "w")
+#Loop through configuration file array and add to gitignore
+for gitignore_content_line in git_ignore:
+  print("INFO: Creating gitignore file line: "+ gitignore_content_line)
+  gitignore_file.write(gitignore_content_line)
+  print("INFO: Created gitignore file line: "+ gitignore_content_line)
+gitignore_file.close()
+print("INFO: File gitignore closed")
+
+#Create Readme.md
+print("INFO: Opening Readme.md file")
+readme_file = open(project_dir+"/README.md", "w")
+print("INFO: Adding readme contents to file")
+readme_file.write(readme)
+print("INFO: Added readme contents to file")
+readme_file.close()
+print("INFO: Closed Readme.md file")
+
+
+#Final printout script complete
+print("=========================================================")
+print("COMPLETE")
