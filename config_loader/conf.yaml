@@ -1,0 +1,57 @@
+---
+#Project Setup Git Ignore
+gitignore_content:
+  - ".terraform"
+
+#Environment List
+environments:
+  - "poc"
+  - "development"
+  - "qa"
+  - "production"
+
+#Readme File Base Content
+readme_content: >
+  # Project Title
+  
+  Simple overview of use/purpose.
+  
+  ## Description
+  
+  An in-depth paragraph about the project
+  
+  ## Getting Started
+  
+  ### Dependencies
+  List of any dependancies that this project required, for example:
+
+  * Containers
+
+  * Modules
+  
+  ### Executing Terraform
+
+  Walkthrough of how to execute your terraform
+
+  ```
+  terraform init
+  ```
+
+  ```
+  terraform apply
+  ```
+  
+  ## Authors
+  
+  Contributors names and contact info
+  
+  ex. user@company.com
+  
+  ## Version History
+  Version history for the project these should be release tag versions, for example:
+  
+  * 0.2
+      * Various bug fixes and optimizations
+      * See [commit change]() or See [release history]()
+  * 0.1
+      * Initial Release
