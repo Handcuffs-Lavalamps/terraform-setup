@@ -1,0 +1,14 @@
+name: Python Validator
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  Validate-Python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cclauss/Find-Python-syntax-errors-action@master
