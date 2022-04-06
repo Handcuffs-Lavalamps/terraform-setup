@@ -1,3 +1,5 @@
+[![Python Validator](https://github.com/CS-AE/terraform-setup/actions/workflows/validator.yml/badge.svg)](https://github.com/CS-AE/terraform-setup/actions/workflows/validator.yml)
+
 # Terraform Setup
 
 Simplete script to create a terraform project from standard
